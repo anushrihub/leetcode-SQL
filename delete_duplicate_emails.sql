@@ -15,9 +15,15 @@ SELECT email, COUNT(id) FROM Person
 GROUP BY email
 HAVING COUNT(id) > 1
 
--- To delete the duplicates from the table
+-- To delete the duplicates from the table using derived table approach
 DELETE FROM Person
 WHERE id IN (
     SELECT id FROM (SELECT id, email, ROW_NUMBER() OVER(PARTITION BY email) as rnk FROM Person ) t 
     WHERE rnk > 1
 );
+
+-- To delete the duplicates from the table using join approach
+
+DELETE p1 FROM Person p1
+JOIN Person p2 
+ON p1.email = p2.email AND p1.id > p2.id;
