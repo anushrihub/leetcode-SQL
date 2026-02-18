@@ -15,4 +15,4 @@ INSERT INTO scores (id, score) VALUES
 SELECT * FROM Scores
 
 -- Window Function Approach
-SELECT score, DENSE_RANK() OVER(order by score DESC) as rnk FROM Scores
+SELECT score, DENSE_RANK() OVER(order by score DESC) as `rank` FROM Scores
