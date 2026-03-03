@@ -31,3 +31,18 @@ WHERE (next_id - id = 1 AND  id - last_id = 1)
 OR (second_next_id - next_id = 1 AND next_id - id = 1)
 OR (id - last_id = 1 AND last_id - second_last_id = 1)
 ORDER BY visit_date
+
+-- using cartesian join 
+SELECT DISTINCT st1.id AS id, st1.visit_date AS visit_date,
+st1.people AS people
+FROM Stadium st1
+join Stadium st2, Stadium st3
+WHERE st1.people >= 100 
+AND st2.people >= 100 AND st3.people >= 100 
+AND (
+
+    (st1.id - st2.id = 1 AND st2.id - st3.id = 1)
+    OR (st3.id - st2.id = 1 AND st2.id - st1.id = 1)
+    OR (st2.id - st1.id = 1 AND st1.id - st3.id = 1)
+)
+ORDER BY visit_date ASC 
