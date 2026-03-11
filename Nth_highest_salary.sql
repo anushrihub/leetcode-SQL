@@ -13,7 +13,7 @@ INSERT INTO Employee (id, salary) VALUES
 SELECT salary
 FROM (
         SELECT salary,
-            ROW_NUMBER() OVER (
+            DENSE_RANK() OVER (
                 ORDER BY salary DESC
             ) AS rnk
         FROM Employee
@@ -25,7 +25,7 @@ WHERE rnk = 2
 
 WITH CTE AS(
     select salary,
-        ROW_NUMBER() OVER(
+        DENSE_RANK() OVER(
             ORDER BY salary DESC
         ) AS rnk
     FROM Employee
@@ -33,5 +33,22 @@ WITH CTE AS(
 select salary
 from CTE
 where rnk = 2
+
+-- Function
+CREATE FUNCTION getNthHighestSalary(N INT) RETURNS INT
+BEGIN
+  DECLARE offset_val INT;
+
+  SET offset_val = N - 1;
+  RETURN (
+      SELECT salary
+      FROM (
+          SELECT DISTINCT salary
+          FROM employee
+          ORDER BY salary DESC
+          LIMIT 1 OFFSET offset_val
+      ) t
+  );
+END
 
 
