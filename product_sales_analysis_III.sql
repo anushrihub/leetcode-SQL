@@ -19,3 +19,10 @@ FROM Product_Sales WHERE (product_id, year) IN
 (SELECT product_id ,min(year) FROM Product_Sales
 GROUP BY product_id)
 
+
+SELECT Sales.product_id, Sales.year AS first_year,quantity, price FROM Sales
+INNER JOIN 
+(SELECT product_id,MIN(YEAR) AS first_year FROM Sales
+GROUP BY product_id) AS Sales2
+ON Sales.product_id = Sales2.product_id AND
+Sales.year = Sales2.first_year
